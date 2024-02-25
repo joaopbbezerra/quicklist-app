@@ -5,6 +5,14 @@
 
 <app-modal [isOpen]="!!checklistBeingEdited()">
   <ng-template>
-    You can't see me
+    <app-form-modal
+      [title]="
+            checklistBeingEdited()?.title
+              ? checklistBeingEdited()!.title!
+              : 'Add Checklist'
+          "
+      [formGroup]="checklistForm"
+      (close)="checklistBeingEdited.set(null)"
+    />
   </ng-template>
 </app-modal>

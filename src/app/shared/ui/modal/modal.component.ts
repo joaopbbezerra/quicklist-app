@@ -16,7 +16,7 @@ import {
 export class ModalComponent {
   dialog = inject(Dialog);
 
-  @Input() set isOpen(value: boolean) {
+  @Input({required: true}) set isOpen(value: boolean) {
     if (value) {
       //We pass the template to the dialog so it handles dynamically when to display
       //panelClass is just a CSS class to be easier to style the dialog later
