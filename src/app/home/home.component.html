@@ -1,1 +1,10 @@
-<p>home works!</p>
+<header>
+  <h1>Quicklist</h1>
+  <button (click)="checklistBeingEdited.set({})">Add Checklist</button>
+</header>
+
+<app-modal [isOpen]="!!checklistBeingEdited()">
+  <ng-template>
+    You can't see me
+  </ng-template>
+</app-modal>
