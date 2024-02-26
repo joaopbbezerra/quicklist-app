@@ -1,0 +1,9 @@
+<ul>
+  @for (checklist of checklists; track checklist.id) {
+    <li>
+      {{checklist.title}}
+    </li>
+  } @empty {
+    <p>Click the add button to create your first checklist!</p>
+  }
+</ul>
