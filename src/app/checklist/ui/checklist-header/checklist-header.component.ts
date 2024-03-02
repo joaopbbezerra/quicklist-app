@@ -1,6 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {RouterLink} from "@angular/router";
-import {Checklist} from "../../../shared/models/checklist";
+import {Checklist, RemoveChecklist} from "../../../shared/models/checklist";
 
 @Component({
   selector: 'app-checklist-header',
@@ -13,4 +13,7 @@ import {Checklist} from "../../../shared/models/checklist";
 })
 export class ChecklistHeaderComponent {
   @Input({required: true}) checklist!: Checklist;
+  @Output() addItem = new EventEmitter<void>();
+  @Output() resetChecklist = new EventEmitter<RemoveChecklist>();
+
 }
