@@ -5,7 +5,11 @@
 
 <section>
   <h2>Your checklists</h2>
-  <app-checklist-list [checklists]="checklistService.checklists()"></app-checklist-list>
+  <app-checklist-list
+    [checklists]="checklistService.checklists()"
+    (edit)="checklistBeingEdited.set($event)"
+    (delete)="checklistService.remove$.next($event)">
+  </app-checklist-list>
 </section>
 
 <app-modal [isOpen]="!!checklistBeingEdited()">

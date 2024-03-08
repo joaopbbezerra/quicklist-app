@@ -1,7 +1,7 @@
 import {computed, effect, inject, Injectable, signal} from '@angular/core';
 import {
   AddChecklistItem,
-  ChecklistItem,
+  ChecklistItem, EditChecklistItem,
   RemoveCheckListItem
 } from "../../shared/models/checklist-item";
 import {Subject} from "rxjs";
@@ -37,6 +37,12 @@ export class ChecklistItemService {
   toggle$ = new Subject<RemoveCheckListItem>();
 
   reset$ = new Subject<RemoveChecklist>();
+
+  edit$ = new Subject<EditChecklistItem>();
+
+  remove$ = new Subject<RemoveCheckListItem>();
+
+  checklistRemoved$ = new Subject<RemoveChecklist>();
 
   private checklistItemsLoaded$ = this.storageService.loadChecklistItems();
 
@@ -87,6 +93,27 @@ export class ChecklistItemService {
           error: err,
         }))
       })
+      this.remove$.pipe(takeUntilDestroyed()).subscribe(
+        checklistItemId => this.state.update(state => ({
+          ...state,
+          checklistItems: state.checklistItems.filter(item => item.checklistId === checklistItemId)
+        }))
+      )
+      this.edit$.pipe(takeUntilDestroyed()).subscribe(
+        update => this.state.update(state => ({
+          ...state,
+          checklistItems: state.checklistItems.map(eachItem => eachItem.id === update.id
+            ? {...eachItem, title: update.data.title}
+            : eachItem
+          )
+        }))
+      )
+      this.checklistRemoved$.pipe(takeUntilDestroyed()).subscribe(checklistId =>
+      this.state.update(state => ({
+        ...state,
+        checklistItems: state.checklistItems.filter(item => item.checklistId !== checklistId)
+      })))
+
       effect(() => {
         if (this.loaded()) {
           this.storageService.saveChecklistItems(this.checklistItems())

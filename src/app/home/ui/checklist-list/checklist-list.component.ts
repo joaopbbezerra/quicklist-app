@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {Checklist} from "../../../shared/models/checklist";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Checklist, RemoveChecklist} from "../../../shared/models/checklist";
 import {RouterLink} from "@angular/router";
 
 @Component({
@@ -13,4 +13,6 @@ import {RouterLink} from "@angular/router";
 })
 export class ChecklistListComponent {
   @Input({required: true}) checklists!: Checklist[]
+  @Output() delete = new EventEmitter<RemoveChecklist>()
+  @Output() edit = new EventEmitter<Checklist>();
 }
