@@ -93,12 +93,12 @@ export class ChecklistItemService {
           error: err,
         }))
       })
-      this.remove$.pipe(takeUntilDestroyed()).subscribe(
-        checklistItemId => this.state.update(state => ({
+      this.remove$.pipe(takeUntilDestroyed()).subscribe((id) =>
+        this.state.update((state) => ({
           ...state,
-          checklistItems: state.checklistItems.filter(item => item.checklistId === checklistItemId)
+          checklistItems: state.checklistItems.filter((item) => item.id !== id),
         }))
-      )
+      );
       this.edit$.pipe(takeUntilDestroyed()).subscribe(
         update => this.state.update(state => ({
           ...state,
