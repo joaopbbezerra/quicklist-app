@@ -4,6 +4,7 @@ import {Subject} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {StorageService} from "./storage.service";
 import {ChecklistItemService} from "../../checklist/data-access/checklist-item.service";
+import {reducer} from "./utils/reducer";
 
 export interface ChecklistsState {
   checklists: Checklist[];
@@ -42,15 +43,13 @@ export class ChecklistService {
         checklists: [...state.checklists, this.addIdToCheckList(checklist)],
       }))
     )
-    this.checklistsLoaded$.pipe(takeUntilDestroyed()).subscribe({
-      next: checklists =>
-        this.state.update(state => ({
-          ...state,
-          checklists,
-          loaded: true,
-        })),
-      error: err => this.state.update(state => ({...state, error: err}))
-      }
+    reducer(
+      this.checklistsLoaded$, (checklists) => this.state.update(state => ({
+        ...state,
+        checklists,
+        loaded: true,
+      })),
+      error => this.state.update(state => ({...state, error}))
     )
     this.remove$.pipe(takeUntilDestroyed()).subscribe(id => this.state.update(state => ({
       ...state,
